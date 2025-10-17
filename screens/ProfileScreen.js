@@ -73,7 +73,7 @@ const ProfileScreen = ({ navigation }) => {
           ID: <Text style={styles.footerInfoSubText}>{user?.uid}</Text>
         </Text>
         <Text style={styles.footerInfoSubText}>
-          Copyright © {today.getFullYear()} RecetApp. Todos los derechos reservados.
+          Copyright © {today.getFullYear()} GymApp. Todos los derechos reservados.
         </Text>
       </View>
       <Footer navigation={navigation} />
