@@ -1,11 +1,14 @@
 import React, { useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
+import {
+  createStackNavigator,
+  TransitionPresets,
+} from "@react-navigation/stack";
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, View, TouchableOpacity, Text } from "react-native";
 import { SafeAreaView, SafeAreaProvider } from "react-native-safe-area-context";
 
-import CategoriesScreen from "./screens/CategoriesScreen";
+import HomeScreenAppRutine from "./screens/HomeScreenAppRutine";
 import RecipeListScreen from "./screens/RecipeListScreen";
 import RecipeDetailScreen from "./screens/RecipeDetailScreen";
 import SearchScreen from "./screens/SearchScreen";
@@ -49,6 +52,30 @@ export default function App() {
               headerTitleStyle: {
                 fontWeight: "bold",
               },
+              // Usa una de estas transiciones predefinidas:
+              // ...TransitionPresets.SlideFromRightIOS,     // iOS style (slide derecha)
+              // ...TransitionPresets.ModalSlideFromBottomIOS, // Modal desde abajo
+              // ...TransitionPresets.ModalPresentationIOS,    // Modal iOS
+              // ...TransitionPresets.FadeFromBottomAndroid,   // Fade Android
+              // ...TransitionPresets.RevealFromBottomAndroid, // Reveal Android
+              // ...TransitionPresets.ScaleFromCenterAndroid,  // Scale Android
+              // ...TransitionPresets.DefaultTransition,       // Transición por defecto
+              ...TransitionPresets.ModalFadeTransition,
+              // Configuración personalizada de velocidad y animación
+              transitionSpec: {
+                open: {
+                  animation: "fade_in",
+                  config: {
+                    duration: 200, // Más rápido (default: 300)
+                  },
+                },
+                close: {
+                  animation: "fade_out", // Animación con rebote
+                  config: {
+                    duration: 500,
+                  },
+                },
+              },
             }}
           >
             <Stack.Screen
@@ -67,8 +94,8 @@ export default function App() {
               options={{ headerShown: false }}
             />
             <Stack.Screen
-              name="Categories"
-              component={CategoriesScreen}
+              name="Rutine"
+              component={HomeScreenAppRutine}
               options={({ navigation }) => ({
                 headerShown: false,
                 headerRight: () => (

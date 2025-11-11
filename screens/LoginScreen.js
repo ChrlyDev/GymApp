@@ -8,17 +8,14 @@ import {
   TouchableOpacity,
   Alert,
   ActivityIndicator,
-  ImageBackground,
   ScrollView,
-  Dimensions,
 } from "react-native";
 import { signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
 import { auth } from "../config/firebase";
 import Feather from "@expo/vector-icons/Feather";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
-
-const { width, height } = Dimensions.get("window");
+import BackgroundWrapper from "../components/BackgroundWrapper";
 
 export default function LoginScreen({ navigation }) {
   const [email, setEmail] = useState("");
@@ -32,7 +29,7 @@ export default function LoginScreen({ navigation }) {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         // El usuario ya está autenticado, redirigir a Categories
-        navigation.replace("Categories");
+        navigation.replace("Rutine");
       }
       setInitializing(false);
     });
@@ -83,7 +80,7 @@ export default function LoginScreen({ navigation }) {
       .then((userCredential) => {
         // Signed in
         const user = userCredential.user;
-        navigation.replace("Categories");
+        navigation.replace("Rutine");
       })
       .catch((error) => {
         // Traducción de errores comunes de Firebase para una mejor UX
@@ -120,18 +117,9 @@ export default function LoginScreen({ navigation }) {
   }
 
   return (
-    <ImageBackground
-      source={{
-        uri: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800",
-      }}
-      style={styles.backgroundImage}
-      blurRadius={3}
-    >
+    <BackgroundWrapper>
       <View style={styles.overlay} />
-      <ScrollView
-        contentContainerStyle={styles.scrollContainer}
-        showsVerticalScrollIndicator={false}
-      >
+      <View style={styles.scrollContainer}>
         <View style={styles.container}>
           {/* Título Principal */}
           <Text style={styles.appTitle}>GYM APP.</Text>
@@ -139,7 +127,9 @@ export default function LoginScreen({ navigation }) {
           <View style={styles.containerFormText}>
             {/* Texto Vertical "Iniciar Sesión" */}
             <View style={styles.verticalTextContainer}>
-              <Text numberOfLines={1} style={styles.verticalText}>Iniciar Sesión</Text>
+              <Text numberOfLines={1} style={styles.verticalText}>
+                Iniciar Sesión
+              </Text>
             </View>
 
             {/* Formulario */}
@@ -155,6 +145,7 @@ export default function LoginScreen({ navigation }) {
                 autoCapitalize="none"
                 keyboardType="email-address"
               />
+              {emailError && <Text style={styles.errorText}>{emailError}</Text>}
 
               {/* Contraseña */}
               <Text style={styles.label}>Contraseña:</Text>
@@ -166,7 +157,13 @@ export default function LoginScreen({ navigation }) {
                 onChangeText={setPassword}
                 secureTextEntry
               />
-              <TouchableOpacity style={styles.subLabel} onPress={() => navigation.navigate("ForgotPassword")}>
+              {passwordError && (
+                <Text style={styles.errorText}>{passwordError}</Text>
+              )}
+              <TouchableOpacity
+                style={styles.subLabel}
+                onPress={() => navigation.navigate("ForgotPassword")}
+              >
                 <Text style={styles.subLabel}>Olvide mi contraseña</Text>
               </TouchableOpacity>
 
@@ -178,7 +175,15 @@ export default function LoginScreen({ navigation }) {
               </View>
 
               {/* Texto de registro */}
-              <TouchableOpacity onPress={() => navigation.navigate("Register")}>
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.navigate("Register");
+                  setEmail("");
+                  setPassword("");
+                  setEmailError("");
+                  setPasswordError("");
+                }}
+              >
                 <Text style={styles.registerText}>
                   No tienes cuenta aún?{" "}
                   <Text style={styles.registerLink}>Regístrate</Text>
@@ -222,17 +227,12 @@ export default function LoginScreen({ navigation }) {
             </TouchableOpacity>
           </View>
         </View>
-      </ScrollView>
-    </ImageBackground>
+      </View>
+    </BackgroundWrapper>
   );
 }
 
 const styles = StyleSheet.create({
-  backgroundImage: {
-    flex: 1,
-    width: width,
-    height: height,
-  },
   overlay: {
     ...StyleSheet.absoluteFillObject,
     backgroundColor: "rgba(0, 0, 0, 0.7)",
@@ -251,26 +251,29 @@ const styles = StyleSheet.create({
     fontSize: 36,
     fontWeight: "bold",
     color: "white",
-    marginBottom: 40,
+    marginBottom: 20,
     letterSpacing: 2,
     textAlign: "center",
     fontStyle: "italic",
   },
   verticalTextContainer: {
     width: 50,
-    height: 400,
+    height: "100%",
     alignItems: "center",
     justifyContent: "center",
-    
+    transform: [{ rotate: "-90deg" }],
+    transformOrigin: "center",
   },
   verticalText: {
-    fontSize: 36,
+    fontSize: 38,
     width: 400,
-    fontWeight: "bold",
+    fontWeight: "800",
     color: "white",
-    letterSpacing: 8,
+    letterSpacing: 10,
     textAlign: "center",
-    transform: [{ rotate: "-90deg" }],
+    // paddingVertical: 15,
+    // borderBottomWidth: 1,
+    // borderBottomColor: "rgba(255, 255, 255, 0.3)",
   },
   containerFormText: {
     flexDirection: "row",
@@ -309,9 +312,16 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     color: "white",
     fontSize: 14,
-    marginBottom: 20,
+    marginBottom: 10,
     borderWidth: 1,
     borderColor: "rgba(255, 255, 255, 0.3)",
+  },
+  errorText: {
+    color: "red",
+    fontSize: 12,
+    marginBottom: 8,
+    textAlign: "left",
+    width: "100%",
   },
   dividerContainer: {
     flexDirection: "row",

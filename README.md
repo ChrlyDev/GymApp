@@ -7,21 +7,25 @@ Una aplicación móvil desarrollada en React Native que permite explorar recetas
 ### Requisitos
 
 1. **Múltiples Pantallas con Navegación**
+
    - Pantalla de Categorías (inicio)
    - Pantalla de Lista de Recetas
    - Pantalla de Detalles de Receta
    - Pantalla de Búsqueda (funcionalidad adicional)
 
 2. **Categorías con Imágenes**
+
    - Grid de categorías con imágenes atractivas
    - Navegación intuitiva entre categorías
 
 3. **Lista de Recetas**
+
    - Muestra recetas con nombre e imagen
    - Filtro de búsqueda local por nombre
    - Layout responsivo en grid
 
 4. **Detalles de Receta**
+
    - Información completa de preparación
    - Lista de ingredientes con medidas
    - Instrucciones paso a paso
@@ -36,6 +40,7 @@ Una aplicación móvil desarrollada en React Native que permite explorar recetas
 ### 🌟 Funcionalidad Adicional
 
 **Búsqueda Avanzada**
+
 - Búsqueda global de recetas por nombre
 - Función de receta aleatoria
 - Interfaz dedicada para exploración
@@ -47,7 +52,7 @@ Una aplicación móvil desarrollada en React Native que permite explorar recetas
 ├── services/
 │   └── api.js            # Servicio para TheMealDB API
 ├── screens/
-│   ├── CategoriesScreen.js    # Pantalla de categorías
+│   ├── HomeScreenAppRutine.js    # Pantalla de categorías
 │   ├── RecipeListScreen.js    # Lista de recetas por categoría
 │   ├── RecipeDetailScreen.js  # Detalles completos de receta
 │   └── SearchScreen.js        # Búsqueda y receta aleatoria
