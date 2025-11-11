@@ -122,7 +122,7 @@ const FavoritesScreen = ({ navigation }) => {
       </Text>
       <TouchableOpacity
         style={styles.exploreButton}
-        onPress={() => navigation.navigate("Categories")}
+        onPress={() => navigation.navigate("Rutine")}
       >
         <Text style={styles.exploreButtonText}>Explorar Ejercicios</Text>
       </TouchableOpacity>

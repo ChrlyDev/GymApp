@@ -18,6 +18,7 @@ import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import Feather from "@expo/vector-icons/Feather";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { BrainVectorIcon, AiVectorTextIcon } from "../components/svgs";
+import { Footer } from "../components/footer";
 
 // ────────────────────────────────────────────────────────────
 // Design tokens
@@ -109,8 +110,8 @@ const Header = ({ routine = "Pecho y Tríceps", onToggleDay }) => {
     <View style={styles.header}>
       <View style={styles.headerInfo}>
         <View style={styles.headerThumb}>
-			<Text style={styles.headerThumbText}>{day}</Text>
-		</View>
+          <Text style={styles.headerThumbText}>{day}</Text>
+        </View>
         <View style={styles.headerText}>
           <Text style={styles.headerTitle}>{dayText}</Text>
           <Text style={styles.headerSubtitle}>{routine}</Text>
@@ -156,91 +157,6 @@ const ExerciseCard = ({ title, desc, image, onPlay }) => {
         </Pressable>
       </View>
     </View>
-  );
-};
-
-const BottomNav = ({ navigation }) => {
-  const [modalVisible, setModalVisible] = useState(false);
-
-  const handleActive = (screen) => {
-    if (screen === modalVisible) return;
-
-    setModalVisible(screen);
-    if (screen === "rutine") {
-      navigation.replace("Rutine");
-    }
-    if (screen === "ai") {
-      navigation.replace("Ai");
-    }
-    if (screen === "food") {
-      navigation.replace("Food");
-    }
-    if (screen === "user") {
-      navigation.replace("Profile");
-    }
-  };
-
-  return (
-    <LinearGradient
-      colors={["#2c2c2c", "#1f1f1f"]}
-      start={{ x: 0, y: 0 }}
-      end={{ x: 1, y: 0 }}
-      style={styles.nav}
-    >
-      <TouchableOpacity
-        style={modalVisible === "shop" ? styles.navItemActive : styles.navItem}
-        onPress={() => {
-          handleActive("shop");
-        }}
-      >
-        <FontAwesome name="shopping-basket" size={24} color="#b3b3b3" />
-        <Text style={styles.navLabelMuted}>Shop</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        style={
-          modalVisible === "rutine" ? styles.navItemActive : styles.navItem
-        }
-        onPress={() => {
-          handleActive("rutine");
-        }}
-      >
-        <Feather name="clipboard" size={24} color="#b3b3b3" />
-        <Text style={styles.navLabelActive}>Rutine</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        style={
-          modalVisible === "ai" ? styles.navItemAiActive : styles.navItemAi
-        }
-        onPress={() => {
-          handleActive("ai");
-        }}
-      >
-        <FontAwesome5 name="brain" size={24} color="#b3b3b3" />
-        <Text style={styles.navLabelMuted}>AI</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        style={modalVisible === "food" ? styles.navItemActive : styles.navItem}
-        onPress={() => {
-          handleActive("food");
-        }}
-      >
-        <FontAwesome name="cutlery" size={20} color="#b3b3b3" />
-        <Text style={styles.navLabelMuted}>Food</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        style={modalVisible === "user" ? styles.navItemActive : styles.navItem}
-        onPress={() => {
-          handleActive("user");
-        }}
-      >
-        <Feather name="user" size={24} color="#b3b3b3" />
-        <Text style={styles.navLabelMuted}>User</Text>
-      </TouchableOpacity>
-    </LinearGradient>
   );
 };
 
@@ -292,14 +208,7 @@ const HomeScreenAppRutine = ({ navigation }) => {
         />
 
         {/* Bottom Navigation */}
-        <View style={styles.navWrapper}>
-          <BottomNav navigation={navigation} />
-        </View>
-
-        {/* Home indicator */}
-        <View style={styles.homeIndicatorArea}>
-          <View style={styles.homeIndicator} />
-        </View>
+        <Footer navigation={navigation} />
       </View>
     </View>
   );
@@ -319,6 +228,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: SPACING.lg,
+    paddingVertical: SPACING.md,
+    gap: SPACING.md,
   },
   // Logo
   logoRow: {
@@ -348,23 +259,23 @@ const styles = StyleSheet.create({
     gap: SPACING.md,
   },
   headerThumb: {
-    width: 88,
-    height: 72,
+    width: 80,
+    height: 64,
     flexDirection: "row",
-	justifyContent: "center",
-	alignItems: "center",
+    justifyContent: "center",
+    alignItems: "center",
     borderRadius: RADII.lg,
     backgroundColor: "#3D3D3D",
-	borderWidth: 1,
-	borderColor: "#97979773",
+    borderWidth: 1,
+    borderColor: "#97979773",
   },
   headerThumbText: {
-	width: "100%",
-	fontSize: 40,
-	fontWeight: "bold",
-	color: "#DDD",
-	textAlign: "center",
-	textAlignVertical: "center",
+    width: "100%",
+    fontSize: 40,
+    fontWeight: "bold",
+    color: "#DDD",
+    textAlign: "center",
+    textAlignVertical: "center",
   },
   headerText: {
     gap: SPACING.xs,

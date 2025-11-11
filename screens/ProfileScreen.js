@@ -1,8 +1,48 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 import { Footer } from "../components/footer";
 import { signOut } from "firebase/auth";
 import { auth } from "../config/firebase";
+
+// ────────────────────────────────────────────────────────────
+// Design tokens
+// ────────────────────────────────────────────────────────────
+const COLORS = {
+  bg: "#0e0e0e",
+  bg2: "#1e1e1e",
+  surface: "rgba(255,255,255,0.12)",
+  surfaceStrong: "rgba(255,255,255,0.25)",
+  text: "#f2f2f7",
+  textMuted: "#b3b3b3",
+  textDim: "#ddd",
+  chip: "#404040",
+  card: "#e3e3e3",
+  cardBorder: "#767676",
+  navItemBg: "rgba(179,179,179,0.2)",
+  navItemBorder: "#444",
+};
+
+const SPACING = {
+  xs: 4,
+  sm: 8,
+  md: 12,
+  lg: 16,
+  xl: 20,
+  xxl: 24,
+};
+
+const RADII = {
+  sm: 8,
+  md: 12,
+  lg: 15,
+  xl: 24,
+  full: 999,
+};
+
+const FONTS = {
+  family: "SF Pro",
+};
 
 const ProfileScreen = ({ navigation }) => {
   const [user, setUser] = useState(null);
@@ -31,60 +71,100 @@ const ProfileScreen = ({ navigation }) => {
     );
   }
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.title}>Perfil</Text>
-      </View>
-      <View style={styles.content}>
-        <Text style={styles.contentTitleText}>Bienvenido al perfil</Text>
-        <View style={styles.profileContainer}>
-          <Image
-            source={require("../assets/profile.png")}
-            style={styles.profileImage}
+    <View style={styles.safe}>
+      <LinearGradient
+        style={styles.wallpaper}
+        colors={["#3a3a3a", COLORS.bg]}
+        start={{ x: 0.1, y: 0 }}
+        end={{ x: 0.9, y: 1 }}
+      />
+      <View style={styles.container}>
+        <View style={styles.content}>
+          <LinearGradient
+            style={styles.wallpaper}
+            colors={["#414141", "#2c2c2c"]}
+            start={{ x: 0.1, y: 0 }}
+            end={{ x: 0.9, y: 1 }}
           />
-        </View>
-        <View style={styles.profileInfoContainer}>
-          <Text style={styles.contentText}>
-            Nombre:{" "}
-            <Text style={styles.contentSubText}>{user?.displayName}</Text>
-          </Text>
-          <Text style={styles.contentText}>
-            Correo: <Text style={styles.contentSubText}>{user?.email}</Text>
-          </Text>
-          <Text style={styles.contentText}>
-            Fecha de creación:{" "}
-            <Text style={styles.contentSubText}>
-              {new Date(user?.metadata.creationTime).toLocaleDateString()}
+          <View style={styles.contentContainer}>
+            <Text style={styles.contentTitleText}>Bienvenido al perfil</Text>
+            <View style={styles.profileContainer}>
+              <Image
+                source={require("../assets/profile.png")}
+                style={styles.profileImage}
+              />
+            </View>
+            <View style={styles.profileInfoContainer}>
+              <Text style={styles.contentText}>
+                Nombre:{" "}
+                <Text style={styles.contentSubText}>{user?.displayName}</Text>
+              </Text>
+              <Text style={styles.contentText}>
+                Correo: <Text style={styles.contentSubText}>{user?.email}</Text>
+              </Text>
+              <Text style={styles.contentText}>
+                Fecha de creación:{" "}
+                <Text style={styles.contentSubText}>
+                  {new Date(user?.metadata.creationTime).toLocaleDateString()}
+                </Text>
+              </Text>
+              <Text style={styles.contentText}>
+                Última actualización:{" "}
+                <Text style={styles.contentSubText}>
+                  {new Date(user?.metadata.lastSignInTime).toLocaleDateString()}{" "}
+                  {new Date(user?.metadata.lastSignInTime).toLocaleTimeString()}
+                </Text>
+              </Text>
+            </View>
+            <TouchableOpacity
+              style={styles.logoutButton}
+              onPress={handleLogout}
+            >
+              <Text style={styles.logoutText}>Cerrar Sesión</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.footerInfoContainer}>
+            <Text style={styles.footerInfoText}>
+              ID: <Text style={styles.footerInfoSubText}>{user?.uid}</Text>
             </Text>
-          </Text>
-          <Text style={styles.contentText}>
-            Última actualización:{" "}
-            <Text style={styles.contentSubText}>
-              {new Date(user?.metadata.lastSignInTime).toLocaleDateString()} {new Date(user?.metadata.lastSignInTime).toLocaleTimeString()}
+            <Text style={styles.footerInfoSubText}>
+              Copyright © {today.getFullYear()} GymApp. Todos los derechos
+              reservados.
             </Text>
-          </Text>
+          </View>
         </View>
-        <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
-          <Text style={styles.logoutText}>Cerrar Sesión</Text>
-        </TouchableOpacity>
+        <Footer navigation={navigation} />
       </View>
-      <View style={styles.footerInfoContainer}>
-        <Text style={styles.footerInfoText}>
-          ID: <Text style={styles.footerInfoSubText}>{user?.uid}</Text>
-        </Text>
-        <Text style={styles.footerInfoSubText}>
-          Copyright © {today.getFullYear()} GymApp. Todos los derechos reservados.
-        </Text>
-      </View>
-      <Footer navigation={navigation} />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  safe: {
+    flex: 1,
+    backgroundColor: COLORS.bg2,
+  },
+  wallpaper: {
+    ...StyleSheet.absoluteFillObject,
+  },
   container: {
     flex: 1,
-    backgroundColor: "#f9fafb",
+    paddingHorizontal: SPACING.lg,
+    paddingVertical: SPACING.md,
+    gap: SPACING.md,
+  },
+  logoRow: {
+    alignItems: "center",
+    justifyContent: "center",
+    paddingVertical: SPACING.xxl,
+  },
+  logoText: {
+    fontSize: 36,
+    fontWeight: "bold",
+    color: "white",
+    letterSpacing: 2,
+    textAlign: "center",
+    fontStyle: "italic",
   },
   header: {
     padding: 20,
@@ -100,7 +180,11 @@ const styles = StyleSheet.create({
   content: {
     flex: 1,
     padding: 20,
-    backgroundColor: "#f9fafb",
+    borderRadius: 25,
+    overflow: "hidden",
+  },
+  contentContainer: {
+    height: "100%",
   },
   contentText: {
     fontSize: 16,
@@ -127,9 +211,9 @@ const styles = StyleSheet.create({
     fontWeight: "600",
   },
   contentTitleText: {
-    fontSize: 24,
+    fontSize: 32,
     fontWeight: "bold",
-    color: "#333",
+    color: "#ddd",
     marginBottom: 20,
     textAlign: "center",
   },
@@ -172,25 +256,26 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
   },
   footerInfoContainer: {
-    alignItems: "left",
-    marginBottom: 5,
-    paddingHorizontal: 10,
-    gap: 5,
     flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: "flex-end",
+    alignItems: "center",
   },
   footerInfoText: {
     fontSize: 10,
-    color: "#333",
+    color: "#636363ff",
     fontWeight: "600",
     textAlign: "center",
+    width: "50%",
   },
   footerInfoSubText: {
     fontSize: 7,
     color: "#64748b",
     fontWeight: "400",
     textAlign: "center",
+    width: "50%",
+  },
+  navWrapper: {
+    paddingTop: SPACING.lg,
   },
 });
 

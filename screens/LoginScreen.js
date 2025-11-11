@@ -28,7 +28,7 @@ export default function LoginScreen({ navigation }) {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
-        // El usuario ya está autenticado, redirigir a Categories
+        // El usuario ya está autenticado, redirigir a Rutinas
         navigation.replace("Rutine");
       }
       setInitializing(false);

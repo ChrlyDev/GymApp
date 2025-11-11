@@ -144,7 +144,7 @@ export default function RegisterScreen({ navigation }) {
           Alert.alert(
             "Registro Exitoso",
             "¡Tu cuenta ha sido creada correctamente!",
-            [{ text: "OK", onPress: () => navigation.replace("Categories") }]
+            [{ text: "OK", onPress: () => navigation.replace("Rutine") }]
           );
         });
       })
